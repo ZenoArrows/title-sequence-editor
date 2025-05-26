@@ -15,7 +15,8 @@ type CommandId =
     'follow' |
     'wait' |
     'restart' |
-    'end';
+    'end' |
+    'view';
 
 interface CommandDesc {
     id: CommandId;
@@ -34,6 +35,7 @@ const CommandDescriptors: CommandDesc[] = [
     { id: 'wait', name: 'STR_TITLE_EDITOR_COMMAND_TYPE_WAIT', desc: 'STR_TITLE_EDITOR_ARGUMENT_WAIT_SECONDS' },
     { id: 'restart', name: 'STR_TITLE_EDITOR_RESTART', desc: '' },
     { id: 'end', name: 'STR_TITLE_EDITOR_END', desc: '' },
+    { id: 'view', name: 'STR_TITLE_EDITOR_COMMAND_TYPE_VIEW', desc: 'STR_TITLE_EDITOR_ARGUMENT_VIEW_FLAGS' },
 ];
 
 function getCommandDescriptor(id: CommandId) {
@@ -165,6 +167,8 @@ class CommandEditorWindow {
                 }
             } else if (command.id === 'zoom') {
                 widgets.fullTextBox.text = ui.mainViewport.zoom.toString();
+            } else if (command.id === 'view') {
+                widgets.fullTextBox.text = ui.mainViewport.flags.toString();
             }
         }
     }
@@ -298,6 +302,11 @@ class CommandEditorWindow {
                 widgets.fullTextBox.maxLength = 6;
                 widgets.fullTextBox.isDisabled = false;
                 break;
+            case 'view':
+                widgets.fullTextBox.text = '0x0';
+                widgets.fullTextBox.maxLength = 10;
+                widgets.fullTextBox.isDisabled = false;
+                break;
         }
 
         var setVisibility = (widget: Widget, commands: CommandId[]) => {
@@ -310,12 +319,12 @@ class CommandEditorWindow {
         };
 
         setVisibility(widgets.argumentDropdown, ['load', 'speed']);
-        setVisibility(widgets.getLocationButton, ['location', 'zoom']);
+        setVisibility(widgets.getLocationButton, ['location', 'zoom', 'view']);
         setVisibility(widgets.selectScenarioButton, ['loadsc']);
         setVisibility(widgets.selectEntityButton, ['follow']);
         setVisibility(widgets.xTextBox, ['location']);
         setVisibility(widgets.yTextBox, ['location']);
-        setVisibility(widgets.fullTextBox, ['loadsc', 'rotate', 'zoom', 'wait']);
+        setVisibility(widgets.fullTextBox, ['loadsc', 'rotate', 'zoom', 'wait', 'view']);
         setVisibility(widgets.viewport, ['follow']);
     }
 
@@ -380,6 +389,11 @@ class CommandEditorWindow {
                 return {
                     type: id
                 };
+            case 'view':
+                return {
+                    type: id,
+                    view: parseInt(widgets.fullTextBox.text || '')
+                };
         }
         return undefined;
     }
@@ -414,6 +428,9 @@ class CommandEditorWindow {
                 break;
             case 'wait':
                 widgets.fullTextBox.text = command.duration.toString();
+                break;
+            case 'view':
+                widgets.fullTextBox.text = command.view.toString();
                 break;
         }
     }
