@@ -644,6 +644,8 @@ class TitleEditorWindow {
                 return cmd.duration.toString();
             case 'loadsc':
                 return cmd.scenario;
+            case 'view':
+                return cmd.flags.toString();
         }
         return "";
     }
