@@ -392,7 +392,7 @@ class CommandEditorWindow {
             case 'view':
                 return {
                     type: id,
-                    view: parseInt(widgets.fullTextBox.text || '')
+                    flags: parseInt(widgets.fullTextBox.text || '')
                 };
         }
         return undefined;
@@ -430,7 +430,7 @@ class CommandEditorWindow {
                 widgets.fullTextBox.text = command.duration.toString();
                 break;
             case 'view':
-                widgets.fullTextBox.text = command.view.toString();
+                widgets.fullTextBox.text = '0x' + command.flags.toString(16);
                 break;
         }
     }
