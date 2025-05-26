@@ -168,7 +168,7 @@ class CommandEditorWindow {
             } else if (command.id === 'zoom') {
                 widgets.fullTextBox.text = ui.mainViewport.zoom.toString();
             } else if (command.id === 'view') {
-                widgets.fullTextBox.text = ui.mainViewport.flags.toString();
+                widgets.fullTextBox.text = ui.mainViewport.visibilityFlags.toString();
             }
         }
     }
